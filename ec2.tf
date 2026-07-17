@@ -61,15 +61,19 @@ resource "aws_security_group" "my_security_group" {
 }
 
 
-#ec2
+#ec2n
 resource "aws_instance" "my_ec2_instance" {
     key_name = aws_key_pair.my_key.key_name
     vpc_security_group_ids = [aws_security_group.my_security_group.id ]
-    instance_type = "t3.micro"
-    ami = "ami-0b6d9d3d33ba97d99"           #ami = amazon machine image (OS) - this is for ubuntu 22.04 LTS in us-east-1 region
+    instance_type = var.ec2_instance_type
+    ami = var.aws_ec2_ami           #ami = amazon machine image (OS) - this is for ubuntu 22.04 LTS in us-east-1 region
+
+    //user_data allows you to run shell script at startup
+    user_data = file("install_nginx.sh") #this is a bash script which will be executed when ec2 instance is created. This script will install nginx web server and create a index.html file in /var/www/html directory.
+
     root_block_device{
-        volume_size = 15
-        volume_type= "gp2"
+        volume_size = var.ec2_root_storage_size
+        volume_type= var.ec2_volume_type
     }
     tags = {
         Name = "Automate Terra EC2 Instance"
