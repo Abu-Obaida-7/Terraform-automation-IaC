@@ -64,7 +64,10 @@ resource "aws_security_group" "my_security_group" {
 #ec2n
 resource "aws_instance" "my_ec2_instance" {
 
-    #we use count=2 to create 2 ec2 instances. If you want to create three ec2 instances then you can use count=3. This is called "count" meta-argument in terraform.
+  #we use count=2 to create 2 ec2 instances. If you want to create three ec2 instances then you can use count=3. This is called "count" meta-argument in terraform.
+  #count=2
+
+  depends_on = [aws_security_group.my_security_group, aws_key_pair.my_key] #this is called "depends_on" meta-argument in terraform. It is used to specify the dependencies between resources. In this case, we are specifying that the ec2 instance depends on the security group and key pair.
 
   key_name               = aws_key_pair.my_key.key_name
   vpc_security_group_ids = [aws_security_group.my_security_group.id]
@@ -75,7 +78,7 @@ resource "aws_instance" "my_ec2_instance" {
   user_data = file("install_nginx.sh") #this is a bash script which will be executed when ec2 instance is created. This script will install nginx web server and create a index.html file in /var/www/html directory.
 
   root_block_device {
-    volume_size = var.ec2_root_storage_size
+    volume_size = var.env == "prd" ? 15 : var.ec2_default_root_storage_size
     volume_type = var.ec2_volume_type
   }
   tags = {
