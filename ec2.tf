@@ -14,7 +14,7 @@ resource "aws_default_vpc" "default" {
 
 #security group
 resource "aws_security_group" "my_security_group" {
-  name        = "Automate Security Group"
+  name        = "${var.environment} Automate Security Group"
   description = "Terraform security group"
   vpc_id      = aws_default_vpc.default.id #this is called interpolation/Object-Notation in which we inherit id of our vpc named "default"
 
@@ -55,7 +55,7 @@ resource "aws_security_group" "my_security_group" {
   }
 
   tags = {
-    Name = "Automate Security Group"
+    Name = "${var.environment}-Automate Security Group"
   }
 
 }
@@ -79,7 +79,8 @@ resource "aws_instance" "my_ec2_instance" {
     volume_type = var.ec2_volume_type
   }
   tags = {
-    Name = "Automate Terra EC2 Instance"
+    Name = "${var.environment}-Automate Terra EC2 Instance"
     environment = var.environment
   }
 }
+
