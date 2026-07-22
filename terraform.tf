@@ -5,5 +5,10 @@ terraform {
       version = "~> 6.0"
     }
   }
+  backend "s3" {
+    bucket = "obaida-terraform-state-bucket-2026"
+    key    = "terraform.tfstate"
+    region = "us-east-1"
+  }
 }
 

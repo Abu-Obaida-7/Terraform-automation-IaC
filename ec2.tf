@@ -80,5 +80,6 @@ resource "aws_instance" "my_ec2_instance" {
   }
   tags = {
     Name = "Automate Terra EC2 Instance"
+    environment = var.environment
   }
 }
