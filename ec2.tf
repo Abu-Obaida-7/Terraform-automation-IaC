@@ -5,6 +5,9 @@
 resource "aws_key_pair" "my_key" {
   key_name   = "terra-key-ec2"
   public_key = file("terra-key-ec2.pub")
+  tags = {
+    Name = "${var.environment}-terra-key-ec2"
+  }
 }
 
 #VPC
