@@ -20,6 +20,6 @@ variable "ec2_volume_type" {
 }
 
 variable "environment" {
-  default = "prd"
+  default = "dev"
   type    = string
 }
