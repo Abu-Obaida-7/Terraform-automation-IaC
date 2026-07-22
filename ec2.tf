@@ -65,6 +65,7 @@ resource "aws_security_group" "my_security_group" {
 resource "aws_instance" "my_ec2_instance" {
 
     #we use count=2 to create 2 ec2 instances. If you want to create three ec2 instances then you can use count=3. This is called "count" meta-argument in terraform.
+  count = 2
 
   key_name               = aws_key_pair.my_key.key_name
   vpc_security_group_ids = [aws_security_group.my_security_group.id]
@@ -79,7 +80,7 @@ resource "aws_instance" "my_ec2_instance" {
     volume_type = var.ec2_volume_type
   }
   tags = {
-    Name = "${var.environment}-Automate Terra EC2 Instance"
+    Name = "${var.environment}-Automate Terra EC2 Instance-${count.index + 1}"
     environment = var.environment
   }
 }
